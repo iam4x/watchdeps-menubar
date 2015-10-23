@@ -1,8 +1,16 @@
 import debug from 'debug';
+
 import { createElement } from 'react';
 import { render } from 'react-dom';
 
-import Layout from './layout';
+import Router from 'react-router';
+import createHashHistory from 'history/lib/createHashHistory';
+import routes from 'routes';
 
-if (process.env.NODE_ENV === 'development') debug.enable('dev');
-render(createElement(Layout), document.getElementById('menubar-react-root'));
+if (__DEV__ === 'development') debug.enable('dev');
+
+const history = createHashHistory();
+const element = createElement(Router, { history, routes });
+const container = document.getElementById('menubar-react-root');
+
+render(element, container);

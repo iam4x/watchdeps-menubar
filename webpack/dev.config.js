@@ -47,20 +47,14 @@ const config = {
       ]
     },
     plugins: [
-      // hot reload
       new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
-
       new webpack.DefinePlugin({
-        'process.env': {
-          BROWSER: JSON.stringify(true),
-          NODE_ENV: JSON.stringify('development')
-        }
+        '__DEV__': true,
+        'process.env': JSON.stringify('development')
       }),
-
       new webpack.optimize.DedupePlugin(),
-
       function() { this.plugin('done', startElectron); }
     ],
     resolve: {
