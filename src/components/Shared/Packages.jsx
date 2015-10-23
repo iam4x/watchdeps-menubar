@@ -15,8 +15,8 @@ class Packages extends Component {
     const { selected, loading, onPackageRefresh, onPackageRemove } = this.props;
 
     const isSelected = (path === selected);
-    const isOutdated = !!(Object.keys(outdatedDeps).length);
-    const isDevOutdated = !!(Object.keys(outdatedDevDeps).length);
+    const nbOutdated = Object.keys(outdatedDeps).length;
+    const nbDevOutdated = Object.keys(outdatedDevDeps).length;
     const [, packageName ] = path.split('/').reverse();
 
     return (
@@ -33,12 +33,12 @@ class Packages extends Component {
         </td>
         <td>
           <span
-            className={ cx('label label-success', isOutdated && 'label-warning') }>
-            dependencies ({ Object.keys(outdatedDeps).length })
+            className={ cx('label label-success', nbOutdated && 'label-warning') }>
+            dependencies { nbOutdated && (<span> ({ nbOutdated })</span>) }
           </span>
           <span
-            className={ cx('label label-success', isDevOutdated && 'label-warning')}>
-            devDependencies ({ Object.keys(outdatedDevDeps).length })
+            className={ cx('label label-success', nbOutdated && 'label-warning')}>
+            devDependencies { nbDevOutdated && (<span> ({ nbDevOutdated })</span>) }
           </span>
         </td>
         <td className='text-right'>
