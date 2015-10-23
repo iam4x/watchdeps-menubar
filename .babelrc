@@ -1,6 +1,7 @@
 {
   "stage": 0,
   "plugins": ["react-transform"],
+  "optional": ["runtime"],
   "extra": {
     "react-transform": {
       "transforms": [{
