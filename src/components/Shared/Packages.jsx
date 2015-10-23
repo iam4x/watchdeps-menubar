@@ -5,14 +5,14 @@ class Packages extends Component {
 
   static propTypes = {
     onPackageRemove: PropTypes.func.isRequired,
-    onPackageClick: PropTypes.func.isRequired,
+    onPackageRefresh: PropTypes.func.isRequired,
     packages: PropTypes.array.isRequired,
     selected: PropTypes.string,
     loading: PropTypes.bool
   }
 
   renderPackage({ id, path, outdatedDeps = {}, outdatedDevDeps = {} }) {
-    const { selected, loading, onPackageClick, onPackageRemove } = this.props;
+    const { selected, loading, onPackageRefresh, onPackageRemove } = this.props;
 
     const isSelected = (path === selected);
     const isOutdated = !!(Object.keys(outdatedDeps).length);
@@ -26,8 +26,7 @@ class Packages extends Component {
         <td>
           <span
             className='label label-default'
-            style={ { fontWeight: isSelected ? 'bold' : 'normal' } }
-            onClick={ () => onPackageClick(path) }>
+            style={ { fontWeight: isSelected ? 'bold' : 'normal' } }>
             { packageName }
           </span>
           { isSelected && loading && <small> ( loading... )</small> }
@@ -44,7 +43,12 @@ class Packages extends Component {
         </td>
         <td className='text-right'>
           <span
-            className='label label-danger'
+            className='label label-success btn btn-sm'
+            onClick={ () => onPackageRefresh(path) }>
+            Refresh
+          </span>
+          <span
+            className='label label-danger btn btn-sm'
             onClick={ () => onPackageRemove(path) }>
             Remove
           </span>

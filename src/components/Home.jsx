@@ -39,7 +39,7 @@ class Home extends Component {
               packages={ collection }
               selected={ selected }
               loading={ loading }
-              onPackageClick={ (pkg) => dispatch(checkOutdated(pkg)) }
+              onPackageRefresh={ (pkg) => dispatch(checkOutdated(pkg)) }
               onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
             <Dependencies
               label='Outdated dependencies'
