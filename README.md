@@ -15,6 +15,7 @@ It will start webpack-dev-server with hot-reload and the menubar application.
 
 ### TODO
 
+* [x] Add react-router
 * [ ] Add css-loader and postcss-loader (webpack)
 * [ ] Add redux and redux-devtools
 * [ ] Add electron devtools
