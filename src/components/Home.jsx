@@ -1,68 +1,80 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import remote from 'remote';
-import { promisify } from 'app-utils';
+import { connect } from 'react-redux';
 
-const fs = remote.require('q-io/fs');
+import { addPackage, checkOutdated } from 'redux/actions/PackagesActions';
+
 const dialog = remote.require('dialog');
-const david = remote.require('david');
 
-const getUpdatedDependencies = promisify(david.getUpdatedDependencies);
-
+@connect(({ packages }) => ({ packages }))
 class Home extends Component {
 
-  state = {}
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    packages: PropTypes.object.isRequired
+  }
 
   handleClick(event) {
     event.preventDefault();
     dialog.showOpenDialog(
       { properties: [ 'openFile' ],
         filters: [ { name: 'NPM Package', extensions: [ 'json' ] } ] },
-      (file) => this.handleFile(file)
+      (files = []) => this.handleSelect(files)
     );
   }
 
-  async handleFile(files) {
-    if (files && files.length) {
-      const [ file ] = files;
-      try {
-        const rawPackage = await fs.read(file);
-        const parsedPackage = JSON.parse(rawPackage);
-
-        const outdatedDeps = await getUpdatedDependencies(parsedPackage);
-        const outdatedDevDeps = await getUpdatedDependencies(parsedPackage, { dev: true });
-
-        return this.setState({ outdatedDeps, outdatedDevDeps });
-      } catch (error) {
-        console.log(error);
-      }
+  handleSelect([ packagePath ]) {
+    if (packagePath) {
+      const { dispatch } = this.props;
+      return dispatch(addPackage(packagePath));
     }
   }
 
   render() {
-    const { outdatedDeps = {}, outdatedDevDeps = {} } = this.state;
+    const { dispatch } = this.props;
+    const { packages: { collection = [], loading } } = this.props;
+    const { packages: { outdatedDeps = {}, outdatedDevDeps = {} } } = this.props;
+
     return (
       <div>
         <button
           onClick={ ::this.handleClick }>
-          Choose your `package.json`
+          add a new `package.json`
         </button>
         <div>
-          <strong>Outdated dependencies</strong>
+          <strong>Your packages</strong>
+          { ' ' }
+          <small>(Click one to check for updates)</small>
           <ul>
-            { Object
-                .keys(outdatedDeps)
-                .map((dependency, index) =>
-                  <li key={ index }>{ dependency }</li>) }
+            { collection.map((packagePath, index) =>
+              <li
+                key={ index }
+                onClick={ () => dispatch(checkOutdated(packagePath)) }>
+                { packagePath }
+              </li>) }
           </ul>
         </div>
         <div>
+          <strong>Outdated dependencies</strong>
+          { loading ?
+            <div>loading...</div> :
+            <ul>
+              { Object
+                  .keys(outdatedDeps)
+                  .map((dependency, index) =>
+                    <li key={ index }>{ dependency }</li>) }
+            </ul> }
+        </div>
+        <div>
           <strong>Outdated devDependencies</strong>
-          <ul>
-            { Object
-                .keys(outdatedDevDeps)
-                .map((devDependency, index) =>
-                  <li key={ index }>{ devDependency }</li>) }
-          </ul>
+            { loading ?
+              <div>loading...</div> :
+              <ul>
+                { Object
+                    .keys(outdatedDevDeps)
+                    .map((devDependency, index) =>
+                      <li key={ index }>{ devDependency }</li>) }
+              </ul> }
         </div>
       </div>
     );
