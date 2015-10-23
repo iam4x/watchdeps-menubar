@@ -31,25 +31,32 @@ class Home extends Component {
         <div className='card-header'>
           <SelectFile onSelectedFile={ ::this.handleSelectedFile } />
         </div>
-        <div className='card-block'>
-          <Packages
-            packages={ collection }
-            selected={ selected }
-            onPackageClick={ (pkg) => dispatch(checkOutdated(pkg)) }
-            onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
-        </div>
-        <div className='card-block'>
-          <strong>Outdated dependencies</strong>
-          { loading ?
-            <div>loading...</div> :
-            <Dependencies dependencies={ outdatedDeps } /> }
-        </div>
-        <div className='card-block'>
-          <strong>Outdated devDependencies</strong>
-            { loading ?
-              <div>loading...</div> :
-              <Dependencies dependencies={ outdatedDevDeps } /> }
-        </div>
+        { collection.length ?
+          <div>
+            <div className='card-block'>
+              <Packages
+                packages={ collection }
+                selected={ selected }
+                onPackageClick={ (pkg) => dispatch(checkOutdated(pkg)) }
+                onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
+            </div>
+            <div className='card-block'>
+              <strong>Outdated dependencies</strong>
+              { loading ?
+                <div>loading...</div> :
+                <Dependencies dependencies={ outdatedDeps } /> }
+            </div>
+            <div className='card-block'>
+              <strong>Outdated devDependencies</strong>
+                { loading ?
+                  <div>loading...</div> :
+                  <Dependencies dependencies={ outdatedDevDeps } /> }
+            </div>
+          </div> :
+          <div className='card-block'>
+            <strong>Start by selecting a `package.json`</strong>
+          </div>
+        }
       </div>
     );
   }
