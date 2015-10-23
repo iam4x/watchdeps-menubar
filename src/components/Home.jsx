@@ -52,8 +52,7 @@ class Home extends Component {
           </div> :
           <div className='card-block'>
             <strong>Start by selecting a `package.json`</strong>
-          </div>
-        }
+          </div> }
       </div>
     );
   }
