@@ -6,8 +6,7 @@ import at from '../constants/ActionTypes';
 
 const fs = remote.require('q-io/fs');
 const david = remote.require('david');
-
-const getOutdated = promisify(david.getUpdatedDependencies);
+const check = promisify(david.getUpdatedDependencies);
 
 export function addPackage(path) {
   return { type: at.PACKAGE_ADD, path };
@@ -23,10 +22,10 @@ export function checkOutdated(path) {
     selected: path,
     promise: async () => {
       const rawPackage = await fs.read(path);
-      const packageJson = await JSON.parse(rawPackage);
+      const packageJson = JSON.parse(rawPackage);
 
-      const outdatedDeps = await getOutdated(packageJson);
-      const outdatedDevDeps = await getOutdated(packageJson, { dev: true });
+      const promises = [ check(packageJson), check(packageJson, { dev: true }) ];
+      const [ outdatedDeps, outdatedDevDeps ] = await* promises;
 
       return { outdatedDeps, outdatedDevDeps, path };
     }
