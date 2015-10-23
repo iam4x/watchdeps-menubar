@@ -6,7 +6,6 @@ import DevTools from './devTools';
 import createMiddleware from './clientMiddleware';
 import * as reducers from './reducers';
 
-const { NODE_ENV, BROWSER } = process.env;
 const reducer = combineReducers(reducers);
 
 export default function(data) {
@@ -29,7 +28,7 @@ export default function(data) {
 
   const store = finalCreateStore(reducer, data);
 
-  if (BROWSER && NODE_ENV === 'developement' && module.hot) {
+  if (__DEV__ && module.hot) {
     module.hot.accept('./reducers', () =>
       store.replaceReducer(require('./reducers')));
   }
