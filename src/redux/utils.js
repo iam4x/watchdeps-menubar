@@ -25,3 +25,24 @@ export function generateConstants(constants) {
     return result;
   }, {});
 }
+
+export function __(method, collection, item) {
+  const index = collection.indexOf(item);
+
+  switch (method) {
+  case 'add':
+    if (index === -1) return [ ...collection, item ];
+    return [ ...collection ];
+
+  case 'remove':
+    if (index > -1) {
+      const updated = [ ...collection ];
+      updated.splice(index, 1);
+      return [ ...updated ];
+    }
+    return [ ...collection ];
+
+  default:
+    return [ ...collection ];
+  }
+}

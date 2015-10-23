@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import remote from 'remote';
 import { connect } from 'react-redux';
 
+import Packages from 'components/Shared/Packages';
 import Dependencies from 'components/Shared/Dependencies';
-import { addPackage, checkOutdated } from 'redux/actions/PackagesActions';
+import SelectFile from 'components/Shared/SelectFile';
 
-const dialog = remote.require('dialog');
+import { addPackage, checkOutdated, removePackage } from 'redux/actions/PackagesActions';
 
 @connect(({ packages }) => ({ packages }))
 class Home extends Component {
@@ -15,48 +15,22 @@ class Home extends Component {
     packages: PropTypes.object.isRequired
   }
 
-  handleClick(event) {
-    event.preventDefault();
-    dialog.showOpenDialog(
-      { properties: [ 'openFile' ],
-        filters: [ { name: 'NPM Package', extensions: [ 'json' ] } ] },
-      (files = []) => this.handleSelect(files)
-    );
-  }
-
-  handleSelect([ packagePath ]) {
-    if (packagePath) {
-      const { dispatch } = this.props;
-      return dispatch(addPackage(packagePath));
-    }
-  }
-
   render() {
     const { dispatch } = this.props;
-    const { packages: { collection = [], loading } } = this.props;
+    const { packages: { collection = [], loading, selected } } = this.props;
     const { packages: { outdatedDeps = {}, outdatedDevDeps = {} } } = this.props;
 
     return (
       <div className='card main--block'>
         <div className='card-header'>
-          <span
-            className='btn btn-sm btn-primary'
-            onClick={ ::this.handleClick }>
-            add a new `package.json`
-          </span>
+          <SelectFile onSelectedFile={ (file) => dispatch(addPackage(file)) } />
         </div>
         <div className='card-block'>
-          <strong>Your packages</strong>
-          { ' ' }
-          <small>(Click one to check for updates)</small>
-          <ul>
-            { collection.map((packagePath, index) =>
-              <li
-                key={ index }
-                onClick={ () => dispatch(checkOutdated(packagePath)) }>
-                <pre>{ packagePath }</pre>
-              </li>) }
-          </ul>
+          <Packages
+            packages={ collection }
+            selected={ selected }
+            onPackageClick={ (pkg) => dispatch(checkOutdated(pkg)) }
+            onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
         </div>
         <div className='card-block'>
           <strong>Outdated dependencies</strong>
