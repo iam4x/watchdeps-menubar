@@ -35,27 +35,20 @@ class Home extends Component {
         </div>
         { collection.length ?
           <div>
-            <div className='card-block'>
-              <Packages
-                packages={ collection }
-                selected={ selected }
-                onPackageClick={ (pkg) => dispatch(checkOutdated(pkg)) }
-                onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
-            </div>
-            <div className='card-block'>
-              <div>
-                <strong>Outdated dependencies</strong>
-                { loading && <small> ( updating... )</small> }
-              </div>
-              <Dependencies dependencies={ outdatedDeps } />
-            </div>
-            <div className='card-block'>
-              <div>
-                <strong>Outdated devDependencies</strong>
-                { loading && <small> ( updating...)</small> }
-              </div>
-              <Dependencies dependencies={ outdatedDevDeps } />
-            </div>
+            <Packages
+              packages={ collection }
+              selected={ selected }
+              loading={ loading }
+              onPackageClick={ (pkg) => dispatch(checkOutdated(pkg)) }
+              onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
+            <Dependencies
+              label='Outdated dependencies'
+              loading={ loading }
+              dependencies={ outdatedDeps } />
+            <Dependencies
+              label='Outdated devDependencies'
+              loading={ loading }
+              dependencies={ outdatedDevDeps } />
           </div> :
           <div className='card-block'>
             <strong>Start by selecting a `package.json`</strong>

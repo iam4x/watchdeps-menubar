@@ -7,46 +7,71 @@ class Packages extends Component {
     onPackageRemove: PropTypes.func.isRequired,
     onPackageClick: PropTypes.func.isRequired,
     packages: PropTypes.array.isRequired,
-    selected: PropTypes.string
+    selected: PropTypes.string,
+    loading: PropTypes.bool
   }
 
   renderPackage({ id, path, outdatedDeps = {}, outdatedDevDeps = {} }) {
-    const { selected, onPackageClick, onPackageRemove } = this.props;
+    const { selected, loading, onPackageClick, onPackageRemove } = this.props;
 
     const isSelected = (path === selected);
     const isOutdated = !!(Object.keys(outdatedDeps).length);
     const isDevOutdated = !!(Object.keys(outdatedDevDeps).length);
+    const [, packageName ] = path.split('/').reverse();
 
     return (
-      <div
+      <tr
         key={ id }
-        className='app--package'
-        style={ { opacity: isSelected ? 1 : 0.5 } }>
-        <span
-          className='label label-primary'
-          onClick={ () => onPackageClick(path) }>
-          { path }
-        </span>
-        <span
-          className={ cx('label label-success', isOutdated && 'label-warning') }>
-          dependencies ({ Object.keys(outdatedDeps).length })
-        </span>
-        <span
-          className={ cx('label label-success', isDevOutdated && 'label-warning')}>
-          devDependencies ({ Object.keys(outdatedDevDeps).length })
-        </span>
-        <span
-          className='label label-danger'
-          onClick={ () => onPackageRemove(path) }>
-          Remove
-        </span>
-      </div>
+        className='app--package'>
+        <td>
+          <span
+            className='label label-default'
+            style={ { fontWeight: isSelected ? 'bold' : 'normal' } }
+            onClick={ () => onPackageClick(path) }>
+            { packageName }
+          </span>
+          { isSelected && loading && <small> ( loading... )</small> }
+        </td>
+        <td>
+          <span
+            className={ cx('label label-success', isOutdated && 'label-warning') }>
+            dependencies ({ Object.keys(outdatedDeps).length })
+          </span>
+          <span
+            className={ cx('label label-success', isDevOutdated && 'label-warning')}>
+            devDependencies ({ Object.keys(outdatedDevDeps).length })
+          </span>
+        </td>
+        <td className='text-right'>
+          <span
+            className='label label-danger'
+            onClick={ () => onPackageRemove(path) }>
+            Remove
+          </span>
+        </td>
+      </tr>
     );
   }
 
   render() {
     const { packages } = this.props;
-    return (<div>{ packages.map(::this.renderPackage) }</div>);
+
+    return (
+      <div className='card-block'>
+        <table className='table table-bordered'>
+          <thead>
+            <tr>
+              <th>Parent directory</th>
+              <th>Status</th>
+              <th className='text-right'>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            { packages.map(::this.renderPackage) }
+          </tbody>
+        </table>
+      </div>
+    );
   }
 
 }
