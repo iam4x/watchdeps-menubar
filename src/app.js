@@ -10,6 +10,8 @@ import { Provider } from 'react-redux';
 import createStore from './redux/create';
 import routes from './routes';
 
+import './styles/app.css';
+
 const store = createStore();
 const history = createHashHistory();
 

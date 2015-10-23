@@ -43,9 +43,15 @@ const config = {
         { test: JS_REGEX, exclude: /node_modules/, loader: 'eslint' }
       ],
       loaders: [
-        { test: JS_REGEX, exclude: /node_modules/, loader: 'babel' }
+        { test: JS_REGEX, exclude: /node_modules/, loader: 'babel' },
+        { test: /\.css$/, loader: 'style!css!postcss' }
       ]
     },
+    postcss: [
+      require('postcss-import')(),
+      require('postcss-url')(),
+      require('precss')()
+    ],
     plugins: [
       new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.HotModuleReplacementPlugin(),
