@@ -15,6 +15,12 @@ class Home extends Component {
     packages: PropTypes.object.isRequired
   }
 
+  handleSelectedFile(file) {
+    const { dispatch } = this.props;
+    dispatch(addPackage(file));
+    dispatch(checkOutdated(file));
+  }
+
   render() {
     const { dispatch } = this.props;
     const { packages: { collection = [], loading, selected } } = this.props;
@@ -23,7 +29,7 @@ class Home extends Component {
     return (
       <div className='card main--block'>
         <div className='card-header'>
-          <SelectFile onSelectedFile={ (file) => dispatch(addPackage(file)) } />
+          <SelectFile onSelectedFile={ ::this.handleSelectedFile } />
         </div>
         <div className='card-block'>
           <Packages
