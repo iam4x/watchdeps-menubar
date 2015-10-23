@@ -1,3 +1,5 @@
+import { generate } from 'shortid';
+
 import at from '../constants/ActionTypes';
 import { __ } from '../utils';
 
@@ -5,14 +7,15 @@ const initialState = { collection: [] };
 
 export default function packages(state = initialState, action) {
   const { collection } = state;
-  const { type, result, packagePath } = action;
+  const { type, result, path } = action;
 
   switch (type) {
   case at.PACKAGE_ADD:
-    return { ...state, collection: __('add', collection, packagePath) };
+    const newPackage = { id: generate(), path };
+    return { ...state, collection: __('add', collection, 'path', newPackage) };
 
   case at.PACKAGE_REMOVE:
-    return { ...state, collection: __('remove', collection, packagePath) };
+    return { ...state, collection: __('remove', collection, 'path', { path }) };
 
   case at.PACKAGE_CHECK_OUTDATED:
     return { ...state, error: null, loading: true, selected: action.selected };

@@ -26,18 +26,27 @@ export function generateConstants(constants) {
   }, {});
 }
 
-export function __(method, collection, item) {
-  const index = collection.indexOf(item);
+export function __(method, collection, findIndex, data) {
+  const index = collection
+    .findIndex(item => item[findIndex] === data[findIndex]);
 
   switch (method) {
   case 'add':
-    if (index === -1) return [ ...collection, item ];
+    if (index === -1) return [ ...collection, data ];
     return [ ...collection ];
 
   case 'remove':
     if (index > -1) {
       const updated = [ ...collection ];
       updated.splice(index, 1);
+      return [ ...updated ];
+    }
+    return [ ...collection ];
+
+  case 'update':
+    if (index > -1) {
+      const updated = [ ...collection ];
+      updated[index] = { ...updated[index], ...data };
       return [ ...updated ];
     }
     return [ ...collection ];

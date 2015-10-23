@@ -10,23 +10,23 @@ class Packages extends Component {
     selected: PropTypes.bool
   }
 
-  renderPackage(packagePath, index) {
+  renderPackage({ path, id }) {
     const { selected, onPackageClick, onPackageRemove } = this.props;
-    const isSelected = (packagePath === selected);
+    const isSelected = (path === selected);
 
     return (
       <div
-        key={ index }
+        key={ id }
         style={ { opacity: isSelected ? 1 : 0.5 } }>
         <span
           className={ cx('label label-default', isSelected && 'label-success') }
-          onClick={ () => onPackageClick(packagePath) }>
-          { packagePath }
+          onClick={ () => onPackageClick(path) }>
+          { path }
         </span>
         <span
           className='label label-danger'
           style={ { marginLeft: 10 } }
-          onClick={ () => onPackageRemove(packagePath) }>
+          onClick={ () => onPackageRemove(path) }>
           Remove
         </span>
       </div>
