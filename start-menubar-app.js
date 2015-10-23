@@ -1,5 +1,9 @@
+/* eslint no-console:0 */
 import path from 'path';
 import createMenubar from 'menubar';
+
+require('electron-debug')();
+require('crash-reporter').start();
 
 const isDev = (process.env.NODE_ENV === 'development');
 
@@ -8,4 +12,10 @@ const html = isDev ? 'index-dev.html' : 'index.html';
 const index = `file://${dir}/${html}`;
 
 const menubar = createMenubar({ dir, index, 'always-on-top': isDev });
-menubar.on('ready', () => console.log('ready')); /* eslint no-console:0 */
+menubar.on('ready', function() {
+  if (isDev) console.log('ready');
+
+  menubar.on('after-create-window', function() {
+    if (isDev && menubar.window) menubar.window.openDevTools();
+  });
+});
