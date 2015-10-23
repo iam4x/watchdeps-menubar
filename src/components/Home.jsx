@@ -37,7 +37,7 @@ class Home extends Component {
     const { packages: { outdatedDeps = {}, outdatedDevDeps = {} } } = this.props;
 
     return (
-      <div className='card'>
+      <div className='card main--block'>
         <div className='card-header'>
           <span
             className='btn btn-sm btn-primary'
@@ -54,7 +54,7 @@ class Home extends Component {
               <li
                 key={ index }
                 onClick={ () => dispatch(checkOutdated(packagePath)) }>
-                { packagePath }
+                <pre>{ packagePath }</pre>
               </li>) }
           </ul>
         </div>

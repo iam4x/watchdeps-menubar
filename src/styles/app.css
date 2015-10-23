@@ -1,1 +1,8 @@
 @import 'bootstrap/dist/css/bootstrap.css';
+
+.app--content {
+  .main--block {
+    margin-bottom: 0;
+    min-height: 100vh;
+  }
+}
