@@ -11,11 +11,9 @@ const dir = path.resolve(__dirname, './src');
 const html = isDev ? 'index-dev.html' : 'index.html';
 const index = `file://${dir}/${html}`;
 
-const menubar = createMenubar({ dir, index, 'always-on-top': isDev });
+const defaultOpts = { dir, index, width: 800, height: 400 };
+const menubar = createMenubar({ ...defaultOpts, 'always-on-top': isDev });
+
 menubar.on('ready', function() {
   if (isDev) console.log('ready');
-
-  menubar.on('after-create-window', function() {
-    if (isDev && menubar.window) menubar.window.openDevTools();
-  });
 });
