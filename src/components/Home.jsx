@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import remote from 'remote';
 import { connect } from 'react-redux';
 
+import Dependencies from 'components/Shared/Dependencies';
 import { addPackage, checkOutdated } from 'redux/actions/PackagesActions';
 
 const dialog = remote.require('dialog');
@@ -58,23 +59,13 @@ class Home extends Component {
           <strong>Outdated dependencies</strong>
           { loading ?
             <div>loading...</div> :
-            <ul>
-              { Object
-                  .keys(outdatedDeps)
-                  .map((dependency, index) =>
-                    <li key={ index }>{ dependency }</li>) }
-            </ul> }
+            <Dependencies dependencies={ outdatedDeps } /> }
         </div>
         <div>
           <strong>Outdated devDependencies</strong>
             { loading ?
               <div>loading...</div> :
-              <ul>
-                { Object
-                    .keys(outdatedDevDeps)
-                    .map((devDependency, index) =>
-                      <li key={ index }>{ devDependency }</li>) }
-              </ul> }
+              <Dependencies dependencies={ outdatedDevDeps } /> }
         </div>
       </div>
     );
