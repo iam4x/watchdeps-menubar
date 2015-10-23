@@ -34,9 +34,11 @@
     "webpack-target-electron-renderer": "^0.1.1"
   },
   "dependencies": {
+    "david": "^6.4.0",
     "debug": "^2.2.0",
     "history": "^1.12.5",
     "menubar": "^2.3.0",
+    "q-io": "^1.13.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-router": "^1.0.0-rc3"
