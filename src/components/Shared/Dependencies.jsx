@@ -9,7 +9,7 @@ export default function Dependencies({ dependencies, label, loading }) {
       <div className='card-block'>
         <strong>{ label }</strong>
         { loading && <small> ( loading... )</small> }
-        <table className='table table-bordered'>
+        <table className='table'>
           <thead>
             <tr>
               <th>Package</th>

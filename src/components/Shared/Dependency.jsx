@@ -24,16 +24,19 @@ export default function Dependency({ name, data }) {
           { required }
         </div>
       </td>
-      <td className='text-left'>
+      <td
+        className='text-left'
+        colSpan={ (stable === latest) && 2 }>
         <span className='label label-success'>
           { stable }
         </span>
       </td>
-      <td className='text-left'>
-        <span className='label label-warning'>
-          { latest }
-        </span>
-      </td>
+      { (stable !== latest) &&
+        <td className='text-left'>
+          <span className='label label-warning'>
+            { latest }
+          </span>
+        </td> }
     </tr>
   );
 }
