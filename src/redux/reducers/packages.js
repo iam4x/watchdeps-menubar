@@ -25,11 +25,11 @@ export default function packages(state = initialState, action) {
 
   case at.PACKAGE_CHECK_OUTDATED_SUCCESS:
     const { outdatedDeps, outdatedDevDeps } = result;
+
     const update = { path: result.path, outdatedDeps, outdatedDevDeps };
-    return {
-      ...state, outdatedDeps, outdatedDevDeps, loading: false,
-      collection: __('update', collection, 'path', update)
-    };
+    const updatedCollection = __('update', collection, 'path', update);
+
+    return { ...state, loading: false, collection: updatedCollection };
 
   default:
     return { ...state };

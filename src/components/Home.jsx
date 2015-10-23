@@ -23,8 +23,10 @@ class Home extends Component {
 
   render() {
     const { dispatch } = this.props;
-    const { packages: { collection = [], loading, selected } } = this.props;
-    const { packages: { outdatedDeps = {}, outdatedDevDeps = {} } } = this.props;
+    const { packages: { collection = [], selected, loading } } = this.props;
+
+    const { outdatedDeps = {}, outdatedDevDeps = {} } = collection
+      .find(({ path }) => path === selected) || {};
 
     return (
       <div className='card main--block'>
@@ -41,16 +43,18 @@ class Home extends Component {
                 onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
             </div>
             <div className='card-block'>
-              <strong>Outdated dependencies</strong>
-              { loading ?
-                <div>loading...</div> :
-                <Dependencies dependencies={ outdatedDeps } /> }
+              <div>
+                <strong>Outdated dependencies</strong>
+                { loading && <small> ( updating... )</small> }
+              </div>
+              <Dependencies dependencies={ outdatedDeps } />
             </div>
             <div className='card-block'>
-              <strong>Outdated devDependencies</strong>
-                { loading ?
-                  <div>loading...</div> :
-                  <Dependencies dependencies={ outdatedDevDeps } /> }
+              <div>
+                <strong>Outdated devDependencies</strong>
+                { loading && <small> ( updating...)</small> }
+              </div>
+              <Dependencies dependencies={ outdatedDevDeps } />
             </div>
           </div> :
           <div className='card-block'>
