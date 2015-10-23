@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import remote from 'remote';
 import cx from 'classnames';
+
+const { dirname, basename } = remote.require('path');
+const { exec } = remote.require('child_process');
 
 class Packages extends Component {
 
@@ -14,22 +18,21 @@ class Packages extends Component {
   renderPackage({ id, path, outdatedDeps = {}, outdatedDevDeps = {} }) {
     const { selected, loading, onPackageRefresh, onPackageRemove } = this.props;
 
-    const isSelected = (path === selected);
     const nbOutdated = Object.keys(outdatedDeps).length;
     const nbDevOutdated = Object.keys(outdatedDevDeps).length;
-    const [, packageName ] = path.split('/').reverse();
 
     return (
       <tr
         key={ id }
-        className={ cx('app--package', isSelected && 'active') }>
+        className={ cx('app--package', (path === selected) && 'active') }>
         <td>
           <span
-            className='label label-default'
-            style={ { fontWeight: isSelected ? 'bold' : 'normal' } }>
-            { packageName }
+            className='label label-default btn'
+            style={ { fontWeight: (path === selected) ? 'bold' : 'normal' } }
+            onClick={ () => exec(`open ${dirname(path)}`) }>
+            { basename(dirname(path)) }
           </span>
-          { isSelected && loading && <small> ( loading... )</small> }
+          { (path === selected) && loading && <small> ( loading... )</small> }
         </td>
         <td>
           <span
