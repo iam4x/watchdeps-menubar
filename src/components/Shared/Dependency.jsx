@@ -12,10 +12,38 @@ class Dependency extends Component {
     const { required, stable, latest, warn } = data;
 
     if (warn) {
-      return (<li>{ name } <small>Cant check for update</small></li>);
+      return (
+        <tr>
+          <td>{ name }</td>
+          <td colSpan='3'>
+            <span className='label label-danger'>
+              Cant check for update
+            </span>
+          </td>
+        </tr>
+      );
     }
 
-    return (<li>{ name + ' - ' + required + ' - ' + stable + ' - ' + latest }</li>);
+    return (
+      <tr>
+        <td>{ name }</td>
+        <td className='text-left'>
+          <div className='label label-default'>
+            { required }
+          </div>
+        </td>
+        <td className='text-left'>
+          <span className='label label-success'>
+            { stable }
+          </span>
+        </td>
+        <td className='text-left'>
+          <span className='label label-warning'>
+            { latest }
+          </span>
+        </td>
+      </tr>
+    );
   }
 
 }

@@ -37,12 +37,15 @@ class Home extends Component {
     const { packages: { outdatedDeps = {}, outdatedDevDeps = {} } } = this.props;
 
     return (
-      <div>
-        <button
-          onClick={ ::this.handleClick }>
-          add a new `package.json`
-        </button>
-        <div>
+      <div className='card'>
+        <div className='card-header'>
+          <span
+            className='btn btn-sm btn-primary'
+            onClick={ ::this.handleClick }>
+            add a new `package.json`
+          </span>
+        </div>
+        <div className='card-block'>
           <strong>Your packages</strong>
           { ' ' }
           <small>(Click one to check for updates)</small>
@@ -55,13 +58,13 @@ class Home extends Component {
               </li>) }
           </ul>
         </div>
-        <div>
+        <div className='card-block'>
           <strong>Outdated dependencies</strong>
           { loading ?
             <div>loading...</div> :
             <Dependencies dependencies={ outdatedDeps } /> }
         </div>
-        <div>
+        <div className='card-block'>
           <strong>Outdated devDependencies</strong>
             { loading ?
               <div>loading...</div> :
