@@ -7,7 +7,7 @@ class Packages extends Component {
     onPackageRemove: PropTypes.func.isRequired,
     onPackageClick: PropTypes.func.isRequired,
     packages: PropTypes.array.isRequired,
-    selected: PropTypes.bool
+    selected: PropTypes.string
   }
 
   renderPackage({ path, id }) {
