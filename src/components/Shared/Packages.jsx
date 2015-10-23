@@ -22,7 +22,7 @@ class Packages extends Component {
     return (
       <tr
         key={ id }
-        className='app--package'>
+        className={ cx('app--package', isSelected && 'active') }>
         <td>
           <span
             className='label label-default'
