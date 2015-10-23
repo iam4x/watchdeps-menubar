@@ -10,22 +10,33 @@ class Packages extends Component {
     selected: PropTypes.string
   }
 
-  renderPackage({ path, id }) {
+  renderPackage({ id, path, outdatedDeps = {}, outdatedDevDeps = {} }) {
     const { selected, onPackageClick, onPackageRemove } = this.props;
+
     const isSelected = (path === selected);
+    const isOutdated = !!(Object.keys(outdatedDeps).length);
+    const isDevOutdated = !!(Object.keys(outdatedDevDeps).length);
 
     return (
       <div
         key={ id }
+        className='app--package'
         style={ { opacity: isSelected ? 1 : 0.5 } }>
         <span
-          className={ cx('label label-default', isSelected && 'label-success') }
+          className='label label-primary'
           onClick={ () => onPackageClick(path) }>
           { path }
         </span>
         <span
+          className={ cx('label label-success', isOutdated && 'label-warning') }>
+          dependencies ({ Object.keys(outdatedDeps).length })
+        </span>
+        <span
+          className={ cx('label label-success', isDevOutdated && 'label-warning')}>
+          devDependencies ({ Object.keys(outdatedDevDeps).length })
+        </span>
+        <span
           className='label label-danger'
-          style={ { marginLeft: 10 } }
           onClick={ () => onPackageRemove(path) }>
           Remove
         </span>

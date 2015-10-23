@@ -4,5 +4,20 @@
   .main--block {
     margin-bottom: 0;
     min-height: 100vh;
+
+    .app--package {
+      span.label {
+        font-weight: normal;
+        margin-right: 10px;
+        padding: 5px 10px;
+
+        &:first-child,
+        &:last-child {
+          cursor: pointer;
+        }
+
+        &:last-child { margin-right: 0; }
+      }
+    }
   }
 }
