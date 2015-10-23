@@ -4,7 +4,7 @@
 
 > Application written in [ReactJS](https://facebook.github.io/react/) within the [electron](https://github.com/atom/electron) wrapper [menubar](https://github.com/maxogden/menubar).
 
-**/!\** ***EARLY BETA STAGE*** **/!\**
+![WatchDeps Menubar](./example.png)
 
 ### Development
 
