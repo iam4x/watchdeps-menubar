@@ -33,7 +33,11 @@ class Packages extends Component {
           <span
             className='label label-default btn'
             style={ { fontWeight: (path === selected) ? 'bold' : 'normal' } }
-            onClick={ () => exec(`open ${dirname(path)}`) }>
+            onClick={ () => onPackageRefresh(path) }>
+            <i
+              className={ cx('fa', active ? 'fa-folder-open' : 'fa-folder') }
+              onClick={ () => exec(`open ${dirname(path)}`) }
+              style={ { marginRight: 10 } } />
             { basename(dirname(path)) }
           </span>
         </td>
