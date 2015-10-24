@@ -42,7 +42,7 @@ export function update({ path, outdatedDeps, outdatedDevDeps, ver = 'stable' }) 
     constant: 'PACKAGE_UPDATE',
     selected: path,
     promise: async () => {
-      const opts = { pwd: dirname(path) };
+      const opts = { cwd: dirname(path) };
 
       function depsToArray(deps, vt) {
         return Object.keys(deps)
