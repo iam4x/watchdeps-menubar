@@ -41,27 +41,27 @@ class Packages extends Component {
         </td>
         <td>
           <span
-            className={ cx('label label-success', nbOutdated && 'label-warning') }>
-            dependencies { nbOutdated && (<span> ({ nbOutdated })</span>) }
+            className={ cx('label label-success', (nbOutdated > 0) && 'label-warning') }>
+            dependencies{ (nbOutdated > 0) && (<span> ({ nbOutdated })</span>) }
           </span>
           <span
-            className={ cx('label label-success', nbOutdated && 'label-warning')}>
-            devDependencies { nbDevOutdated && (<span> ({ nbDevOutdated })</span>) }
+            className={ cx('label label-success', (nbDevOutdated > 0) && 'label-warning')}>
+            devDependencies{ (nbDevOutdated > 0) && (<span> ({ nbDevOutdated })</span>) }
           </span>
         </td>
         <td className='text-right'>
           <span
-            className='label label-success btn btn-sm'
+            className='label btn btn-sm btn-success'
             onClick={ () => onPackageRefresh(path) }>
             <i className={ cx('fa fa-refresh', active && loading && 'fa-spin') } />
           </span>
           <span
-            className='label label-primary btn btn-sm'
+            className='label btn btn-sm btn-primary'
             onClick={ () => onPackageUpdate({ path, outdatedDeps, outdatedDevDeps }) }>
             Update { (active && updating) && <i className='fa fa-cog fa-spin' /> }
           </span>
           <span
-            className='label label-danger btn btn-sm'
+            className='label btn btn-sm btn-danger'
             onClick={ () => onPackageRemove(path) }>
             Remove
           </span>
