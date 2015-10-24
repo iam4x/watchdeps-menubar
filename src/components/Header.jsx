@@ -2,23 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import SelectFile from 'components/Shared/SelectFile';
-import { addPackage, checkOutdated } from 'redux/actions/PackagesActions';
+import { add, refresh } from 'redux/actions/PackagesActions';
 
-function Header({ dispatch }) {
+function Header({ dispatch, preferences: { withLatest } }) {
+  function handleSelected(path) {
+    dispatch(add({ path }));
+    dispatch(refresh({ path, withLatest }));
+  }
+
   return (
     <header className='app--header'>
       <div className='container-fluid clearfix'>
         <div className='pull-left'>WatchDeps</div>
         <div className='pull-right'>
-          <SelectFile
-            onSelectedFile={ (file) => {
-              dispatch(addPackage(file));
-              dispatch(checkOutdated(file));
-            } } />
+          <SelectFile onSelectedFile={ handleSelected } />
         </div>
       </div>
     </header>
   );
 }
 
-export default connect()(Header);
+const reducer = ({ preferences }) => ({ preferences });
+export default connect(reducer)(Header);

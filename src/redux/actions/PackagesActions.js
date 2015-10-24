@@ -1,4 +1,4 @@
-import reduce from 'lodash/collection/reduce';
+import { reduce } from 'lodash-fp';
 
 import remote from 'remote';
 import { promisify } from 'app-utils';
@@ -13,31 +13,35 @@ const { spawn } = remote.require('child-process-promise');
 
 const check = promisify(david.getUpdatedDependencies);
 
-export function addPackage(path) {
+export function add({ path }) {
   return { type: at.PACKAGE_ADD, path };
 }
 
-export function removePackage(path) {
+export function remove({ path }) {
   return { type: at.PACKAGE_REMOVE, path };
 }
 
-export function checkOutdated(path) {
+export function refresh({ path, withLatest }) {
   return asyncFuncCreator({
-    constant: 'PACKAGE_CHECK_OUTDATED',
+    constant: 'PACKAGE_REFRESH',
     selected: path,
     promise: async () => {
       const rawPackage = await fs.read(path);
       const packageJson = JSON.parse(rawPackage);
 
-      const promises = [ check(packageJson), check(packageJson, { dev: true }) ];
-      const [ outdatedDeps, outdatedDevDeps ] = await* promises;
+      const [ outdatedDeps, outdatedDevDeps ] = await* [
+        check(packageJson, { stable: !withLatest }),
+        check(packageJson, { dev: true, stable: !withLatest })
+      ];
 
       return { outdatedDeps, outdatedDevDeps, path };
     }
   });
 }
 
-export function update({ path, outdatedDeps, outdatedDevDeps, ver = 'stable' }) {
+export function update({ path, outdatedDeps, outdatedDevDeps, withLatest }) {
+  const ver = withLatest ? 'latest' : 'stable';
+
   return asyncFuncCreator({
     constant: 'PACKAGE_UPDATE',
     selected: path,

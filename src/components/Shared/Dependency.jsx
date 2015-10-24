@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Dependency({ name, data }) {
+export default function Dependency({ name, data, withLatest }) {
   const { required, stable, latest, warn } = data;
 
   if (warn) {
@@ -26,12 +26,12 @@ export default function Dependency({ name, data }) {
       </td>
       <td
         className='text-left'
-        colSpan={ (stable === latest) && 2 }>
+        colSpan={ (stable === latest || !withLatest) && 2 }>
         <span className='label label-success'>
           { stable }
         </span>
       </td>
-      { (stable !== latest) &&
+      { ((stable !== latest) && withLatest) &&
         <td className='text-left'>
           <span className='label label-warning'>
             { latest }

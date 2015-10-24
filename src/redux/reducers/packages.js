@@ -29,13 +29,13 @@ export default function packages(state = initialState, action) {
       collection: __('update', collection, path,
         { path: result.path, ...result.remaining }) };
 
-  case at.PACKAGE_CHECK_OUTDATED:
+  case at.PACKAGE_REFRESH:
     return { ...state, error: null, loading: true, selected: action.selected };
 
-  case at.PACKAGE_CHECK_OUTDATED_FAIL:
+  case at.PACKAGE_REFRESH_FAIL:
     return { ...state, error: result, loading: false };
 
-  case at.PACKAGE_CHECK_OUTDATED_SUCCESS:
+  case at.PACKAGE_REFRESH_SUCCESS:
     return { ...state, loading: false,
       collection: __('update', collection, 'path',
         { path: result.path, outdatedDeps, outdatedDevDeps }) };

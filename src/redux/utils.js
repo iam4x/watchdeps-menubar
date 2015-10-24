@@ -26,6 +26,7 @@ export function generateConstants(constants) {
   }, {});
 }
 
+// TODO: Remove this util, use `lodash-fp` into reducers
 export function __(method, collection, findIndex, data) {
   const index = collection
     .findIndex(item => item[findIndex] === data[findIndex]);

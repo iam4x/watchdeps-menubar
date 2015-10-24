@@ -1,5 +1,6 @@
 @import 'bootstrap/dist/css/bootstrap';
 @import 'font-awesome/css/font-awesome';
+@import 'react-toggle/style';
 
 @import './_variables';
 @import './_header';

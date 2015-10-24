@@ -1,8 +1,9 @@
 import React from 'react';
 import Dependency from 'components/Shared/Dependency';
 
-export default function Dependencies({ dependencies, label }) {
-  const hasOutdated = !!(Object.keys(dependencies).length);
+export default function Dependencies(props) {
+  const { dependencies, label, withLatest } = props;
+  const hasOutdated = Object.keys(dependencies).length > 0;
 
   if (hasOutdated) {
     return (
@@ -14,7 +15,7 @@ export default function Dependencies({ dependencies, label }) {
               <th>Package</th>
               <th>Actual</th>
               <th>Stable</th>
-              <th>Latest</th>
+              { withLatest && <th>Latest</th> }
             </tr>
           </thead>
           <tbody>
@@ -24,6 +25,7 @@ export default function Dependencies({ dependencies, label }) {
                 <Dependency
                   key={ index }
                   name={ dependency }
+                  withLatest={ withLatest }
                   data={ dependencies[dependency] } /> ) }
           </tbody>
         </table>
