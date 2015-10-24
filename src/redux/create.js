@@ -17,12 +17,12 @@ export default function(data) {
       applyMiddleware(middleware),
       DevTools.instrument(),
       persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
-      persistLocal(null, { key: 'user-preferences' })
+      persistLocal(null, { key: 'watchdeps-dev' })
     )(createStore);
   } else {
     finalCreateStore = compose(
       applyMiddleware(middleware),
-      persistLocal(null, { key: 'user-preferences' })
+      persistLocal(null, { key: 'watchdeps-prod' })
     )(createStore);
   }
 
