@@ -23,7 +23,7 @@ export default function packages(state = initialState, action) {
   case at.PACKAGE_UPDATE_FAIL:
     return { ...state, error: result, updating: false };
 
-  case at.PACAKAGE_UPDATE_SUCCESS:
+  case at.PACKAGE_UPDATE_SUCCESS:
     return { ...state, error: null, updating: false };
 
   case at.PACKAGE_CHECK_OUTDATED:

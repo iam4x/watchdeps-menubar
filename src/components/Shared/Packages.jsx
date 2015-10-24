@@ -11,13 +11,14 @@ class Packages extends Component {
     onPackageRemove: PropTypes.func.isRequired,
     onPackageRefresh: PropTypes.func.isRequired,
     onPackageUpdate: PropTypes.func.isRequired,
-    packages: PropTypes.array.isRequired,
+    collection: PropTypes.array.isRequired,
     selected: PropTypes.string,
-    loading: PropTypes.bool
+    loading: PropTypes.bool,
+    updating: PropTypes.bool
   }
 
   renderPackage({ id, path, outdatedDeps = {}, outdatedDevDeps = {} }) {
-    const { selected, loading } = this.props;
+    const { selected, loading, updating } = this.props;
     const { onPackageRefresh, onPackageRemove, onPackageUpdate } = this.props;
 
     const active = (path === selected);
@@ -55,7 +56,7 @@ class Packages extends Component {
           <span
             className='label label-primary btn btn-sm'
             onClick={ () => onPackageUpdate({ path, outdatedDeps, outdatedDevDeps }) }>
-            Update
+            Update { (active && updating) && <i className='fa fa-cog fa-spin' /> }
           </span>
           <span
             className='label label-danger btn btn-sm'
@@ -68,7 +69,7 @@ class Packages extends Component {
   }
 
   render() {
-    const { packages } = this.props;
+    const { collection } = this.props;
 
     return (
       <div className='card-block'>
@@ -81,7 +82,7 @@ class Packages extends Component {
             </tr>
           </thead>
           <tbody>
-            { packages.map(::this.renderPackage) }
+            { collection.map(::this.renderPackage) }
           </tbody>
         </table>
       </div>
