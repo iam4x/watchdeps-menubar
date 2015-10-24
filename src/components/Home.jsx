@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import Packages from 'components/Shared/Packages';
 import Dependencies from 'components/Shared/Dependencies';
-import SelectFile from 'components/Shared/SelectFile';
 
 import * as pa from 'redux/actions/PackagesActions';
 
@@ -15,12 +14,6 @@ class Home extends Component {
     packages: PropTypes.object.isRequired
   }
 
-  handleSelectedFile(file) {
-    const { dispatch } = this.props;
-    dispatch(pa.addPackage(file));
-    dispatch(pa.checkOutdated(file));
-  }
-
   render() {
     const { dispatch } = this.props;
     const { packages: { collection = [], selected } } = this.props;
@@ -30,9 +23,6 @@ class Home extends Component {
 
     return (
       <div className='card main--block'>
-        <div className='card-header'>
-          <SelectFile onSelectedFile={ ::this.handleSelectedFile } />
-        </div>
         { collection.length ?
           <div>
             <Packages

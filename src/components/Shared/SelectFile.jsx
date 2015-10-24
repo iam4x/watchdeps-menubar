@@ -15,7 +15,7 @@ class SelectFile extends Component {
   }
 
   static defaultProps = {
-    label: 'Select a `package.json`',
+    label: 'add a package',
     properties: [ 'openFile' ],
     filters: [ { name: 'NPM Package', extensions: [ 'json' ] } ]
   }
@@ -36,8 +36,11 @@ class SelectFile extends Component {
     const { className, label } = this.props;
     return (
       <span
-        className={ cx('btn btn-sm btn-primary', className) }
+        className={ cx('label btn btn-primary', className) }
         onClick={ ::this.handleClick }>
+        <i
+          className='fa fa-plus-square'
+          style={ { marginRight: 10 } } />
         { label }
       </span>
     );
