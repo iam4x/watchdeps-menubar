@@ -3,7 +3,6 @@ import remote from 'remote';
 import cx from 'classnames';
 
 const { dirname, basename } = remote.require('path');
-const { exec } = remote.require('child_process');
 
 class Packages extends Component {
 
@@ -36,7 +35,6 @@ class Packages extends Component {
             onClick={ () => onPackageRefresh(path) }>
             <i
               className={ cx('fa', active ? 'fa-folder-open' : 'fa-folder') }
-              onClick={ () => exec(`open ${dirname(path)}`) }
               style={ { marginRight: 10 } } />
             { basename(dirname(path)) }
           </span>
