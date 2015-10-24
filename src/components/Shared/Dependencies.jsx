@@ -1,14 +1,13 @@
 import React from 'react';
 import Dependency from 'components/Shared/Dependency';
 
-export default function Dependencies({ dependencies, label, loading }) {
+export default function Dependencies({ dependencies, label }) {
   const hasOutdated = !!(Object.keys(dependencies).length);
 
   if (hasOutdated) {
     return (
       <div className='card-block'>
         <strong>{ label }</strong>
-        { loading && <small> ( loading... )</small> }
         <table className='table'>
           <thead>
             <tr>

@@ -20,13 +20,14 @@ class Packages extends Component {
     const { selected, loading } = this.props;
     const { onPackageRefresh, onPackageRemove, onPackageUpdate } = this.props;
 
+    const active = (path === selected);
     const nbOutdated = Object.keys(outdatedDeps).length;
     const nbDevOutdated = Object.keys(outdatedDevDeps).length;
 
     return (
       <tr
         key={ id }
-        className={ cx('app--package', (path === selected) && 'active') }>
+        className={ cx('app--package', { active }) }>
         <td>
           <span
             className='label label-default btn'
@@ -34,7 +35,6 @@ class Packages extends Component {
             onClick={ () => exec(`open ${dirname(path)}`) }>
             { basename(dirname(path)) }
           </span>
-          { (path === selected) && loading && <small> ( loading... )</small> }
         </td>
         <td>
           <span
@@ -50,7 +50,7 @@ class Packages extends Component {
           <span
             className='label label-success btn btn-sm'
             onClick={ () => onPackageRefresh(path) }>
-            Refresh
+            <i className={ cx('fa fa-refresh', active && loading && 'fa-spin') } />
           </span>
           <span
             className='label label-primary btn btn-sm'
