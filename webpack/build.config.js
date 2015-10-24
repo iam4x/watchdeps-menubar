@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import webpackTargetElectronRenderer from 'webpack-target-electron-renderer';
 
 const JS_REGEX = /\.js|\.jsx/;
+const FILE_REGEX = /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)(\?v=[0-9].[0-9].[0-9])?$/;
 
 const config = {
   devtool: 'source-map',
@@ -19,6 +20,7 @@ const config = {
     ],
     loaders: [
       { test: JS_REGEX, exclude: /node_modules/, loader: 'babel' },
+      { test: FILE_REGEX, loader: 'url' },
       { test: /\.css$/, loader: 'style!css!postcss' }
     ]
   },
