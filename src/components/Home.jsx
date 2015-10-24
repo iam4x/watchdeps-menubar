@@ -68,7 +68,7 @@ function Home({ dispatch, packages, preferences }) {
           <Dependencies
             label='Outdated devDependencies'
             dependencies={ outdatedDevDeps }
-            withLatest={ withLatest } /> :
+            withLatest={ withLatest } />
         </div> :
         <div className='card-block'>
           <strong>Start by selecting a `package.json`</strong>
