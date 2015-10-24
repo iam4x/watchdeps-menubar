@@ -1,0 +1,11 @@
+.app--header {
+  background-color: #282C34;
+  color: #61AFEF;
+  font-weight: bold;
+  padding: 7px;
+  position: fixed;
+  top: 0;
+  height: $header-height;
+  width: 100%;
+  z-index: 9999;
+}
