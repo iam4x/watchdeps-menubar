@@ -5,7 +5,7 @@ import Packages from 'components/Shared/Packages';
 import Dependencies from 'components/Shared/Dependencies';
 import SelectFile from 'components/Shared/SelectFile';
 
-import { addPackage, checkOutdated, removePackage } from 'redux/actions/PackagesActions';
+import * as pa from 'redux/actions/PackagesActions';
 
 @connect(({ packages }) => ({ packages }))
 class Home extends Component {
@@ -17,8 +17,8 @@ class Home extends Component {
 
   handleSelectedFile(file) {
     const { dispatch } = this.props;
-    dispatch(addPackage(file));
-    dispatch(checkOutdated(file));
+    dispatch(pa.addPackage(file));
+    dispatch(pa.checkOutdated(file));
   }
 
   render() {
@@ -39,8 +39,9 @@ class Home extends Component {
               packages={ collection }
               selected={ selected }
               loading={ loading }
-              onPackageRefresh={ (pkg) => dispatch(checkOutdated(pkg)) }
-              onPackageRemove={ (pkg) => dispatch(removePackage(pkg)) } />
+              onPackageRefresh={ (pkg) => dispatch(pa.checkOutdated(pkg)) }
+              onPackageRemove={ (pkg) => dispatch(pa.removePackage(pkg)) }
+              onPackageUpdate={ (opts) => dispatch(pa.update(opts)) } />
             <Dependencies
               label='Outdated dependencies'
               loading={ loading }

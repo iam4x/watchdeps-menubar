@@ -17,6 +17,15 @@ export default function packages(state = initialState, action) {
   case at.PACKAGE_REMOVE:
     return { ...state, collection: __('remove', collection, 'path', { path }) };
 
+  case at.PACKAGE_UPDATE:
+    return { ...state, error: null, updating: true, selected: action.selected };
+
+  case at.PACKAGE_UPDATE_FAIL:
+    return { ...state, error: result, updating: false };
+
+  case at.PACAKAGE_UPDATE_SUCCESS:
+    return { ...state, error: null, updating: false };
+
   case at.PACKAGE_CHECK_OUTDATED:
     return { ...state, error: null, loading: true, selected: action.selected };
 
