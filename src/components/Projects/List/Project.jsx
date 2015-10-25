@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
 import { countOutdated, packageManagersToArray } from 'utils/projects';
-import { refresh, update, remove } from 'redux/actions/ProjectsActions';
+import { refresh, update, remove, updateOne } from 'redux/actions/ProjectsActions';
 
 class Project extends Component {
 
@@ -16,8 +16,17 @@ class Project extends Component {
 
   static contextTypes = { store: PropTypes.object.isRequired }
 
+  handleUpdateOne({ versions, ...rest }) {
+    const { project, dependenciesType } = this.props;
+    const { store: { dispatch } } = this.context;
+
+    const version = versions[dependenciesType];
+
+    return dispatch(updateOne({ type: 'npm', project, version, ...rest }));
+  }
+
   renderDependencies(dependencies: Object, dev) {
-    const { dependenciesType } = this.props;
+    const { dependenciesType, project: { updating, refreshing } } = this.props;
 
     return (
       <table className='table dependencies'>
@@ -62,8 +71,14 @@ class Project extends Component {
                   { dependenciesType === 'latest' &&
                     <td className='text-right'>{ versions.latest }</td>}
                   <td className='text-right'>
-                    <button className='label btn btn-primary'>
-                      <i className='fa fa-cog' /> update
+                    <button
+                      className='label btn btn-primary'
+                      onClick={ () =>
+                        this.handleUpdateOne({ dev, versions, dependency }) }
+                      disabled={ updating || refreshing }>
+                      <i className={ cx(
+                          'fa fa-cog',
+                          updating && 'fa-spin') } /> update
                     </button>
                   </td>
                 </tr>) }

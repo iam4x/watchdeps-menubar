@@ -38,3 +38,11 @@ export async function update({ path, outdated }, type) {
 
   return;
 }
+
+export async function updateOne({ path, dependency, version, dev }) {
+  const opts = { cwd: path };
+  const args = [ 'i', dev ? '-D' : '-S', dependency + '@' + version ];
+
+  await spawn('npm', args, opts);
+  return;
+}
