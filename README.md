@@ -15,5 +15,6 @@ It will start webpack-dev-server with hot-reload and the menubar application.
 
 ### Build
 
-* `$ npm run build-src` (build src into dist)
-* `$ npm run build-app` (build src && build app package)
+* `$ npm run build`
+
+Builds new version into `./release`

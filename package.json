@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development babel-node ./webpack/utils/start-dev-server",
     "start": "NODE_ENV=production electron ./index.js",
-    "build-src": "rm -rf dist && NODE_ENV=production babel-node ./node_modules/.bin/webpack --config ./webpack/build.config.js --progress --colors",
-    "build-app": "NODE_ENV=production babel-node ./build-app.js",
+    "build": "NODE_ENV=production babel-node ./build-app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "iam4x",
