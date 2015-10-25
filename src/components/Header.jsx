@@ -1,13 +1,13 @@
 import React from 'react';
+import Toggle from 'react-toggle';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
-import SelectFile from 'components/Shared/SelectFile';
-import { add, refresh } from 'redux/actions/PackagesActions';
+import { update } from 'redux/actions/PreferencesActions';
 
-function Header({ dispatch, preferences: { withLatest } }) {
-  function handleSelected(path) {
-    dispatch(add({ path }));
-    dispatch(refresh({ path, withLatest }));
+function Header({ dispatch, withLatest }) {
+  function handleCheckboxChange({ target: { checked } }) {
+    dispatch(update({ withLatest: checked }));
   }
 
   return (
@@ -15,12 +15,24 @@ function Header({ dispatch, preferences: { withLatest } }) {
       <div className='container-fluid clearfix'>
         <div className='pull-left'>WatchDeps</div>
         <div className='pull-right'>
-          <SelectFile onSelectedFile={ handleSelected } />
+          <div className='clearfix'>
+            <div
+              className='pull-left'
+              style={ { paddingTop: 1, marginRight: 10 } }>
+              <Toggle
+                defaultChecked={ withLatest }
+                onChange={ handleCheckboxChange } />
+            </div>
+            <Link
+              to='/create'
+              className='btn btn-sm btn-secondary'>
+              <i className='fa fa-plus' /> add project
+            </Link>
+          </div>
         </div>
       </div>
     </header>
   );
 }
 
-const reducer = ({ preferences }) => ({ preferences });
-export default connect(reducer)(Header);
+export default connect(({ preferences }) => ({ preferences }))(Header);

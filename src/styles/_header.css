@@ -8,4 +8,9 @@
   height: $header-height;
   width: 100%;
   z-index: 9999;
+
+  .btn {
+    height: 23px;
+    padding: 0.05rem .75rem;
+  }
 }

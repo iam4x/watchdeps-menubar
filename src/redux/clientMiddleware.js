@@ -1,16 +1,17 @@
-// // from https://github.com/erikras/react-redux-universal-hot-example/blob/master/src%2Fredux%2FclientMiddleware.js
+import defer from 'lodash/function/defer';
+
 export default function clientMiddleware() {
   return () => {
     return (next) => (action) => {
-      const { promise, types, ... rest } = action;
+      const { promise, types, ...rest } = action;
       if (!promise) return next(action);
 
       const [ REQUEST, SUCCESS, FAILURE ] = types;
       next({ ...rest, type: REQUEST });
-      return promise().then(
+      return defer(() => promise().then(
         (result) => next({ ...rest, result, type: SUCCESS }),
         (error) => next({ ...rest, error, type: FAILURE })
-      );
+      ));
     };
   };
 }

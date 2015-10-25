@@ -1,32 +1,47 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 import remote from 'remote';
 
 const dialog = remote.require('dialog');
 
-export default function SelectFile({ className, onSelectedFile, ...props }) {
-  const { label = 'add a package' } = props;
-  const { properties = [ 'openFile' ] } = props;
-  const { filters = [ { name: 'NPM Package', extensions: [ 'json' ] } ] } = props;
+class SelectFile extends Component {
 
-  function handleCloseDialog(files) {
-    if (files) return onSelectedFile(files[0]);
+  static propTypes = {
+    label: PropTypes.string.isRequired,
+    properties: PropTypes.array.isRequired,
+    onSelected: PropTypes.func.isRequired,
+    className: PropTypes.string
   }
 
-  function handleClick() {
-    dialog.showOpenDialog({ filters, properties }, handleCloseDialog);
+  state = { isOpen: false }
+
+  handleCloseDialog(files) {
+    const { onSelected } = this.props;
+    if (files) onSelected(files[0]);
+
+    return this.setState({ isOpen: false });
   }
 
-  return (
-    <span
-      className={ cx('label btn btn-primary', className) }
-      onClick={ handleClick }>
-      <i
-        className='fa fa-plus-square'
-        style={ { marginRight: 10 } } />
-      { label }
-    </span>
-  );
+  handleClick() {
+    const { properties } = this.props;
+    dialog.showOpenDialog({ properties }, ::this.handleCloseDialog);
+  }
+
+  render() {
+    const { label, className } = this.props;
+
+    return (
+      <span
+        className={ cx('btn btn-sm btn-secondary', className) }
+        onClick={ ::this.handleClick }>
+        <i
+          className='fa fa-folder'
+          style={ { marginRight: 10 } } />
+        { label }
+      </span>
+    );
+  }
+
 }
 
 export default SelectFile;

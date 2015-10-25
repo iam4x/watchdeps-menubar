@@ -1,4 +1,4 @@
-export function promisify(callbackStyleFn) {
+export default function promisify(callbackStyleFn) {
   return (...args) =>
       new Promise((resolve, reject) =>
         callbackStyleFn(...args, (err, results) =>
