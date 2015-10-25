@@ -17,14 +17,18 @@ class List extends Component {
     preferences: PropTypes.object.isRequired
   }
 
-  state = { active: null }
+  state = { active: null, search: null }
 
   handleSelect(index) {
     this.setState({ active: index });
   }
 
+  handleSearch({ target: { value } }) {
+    this.setState({ search: value });
+  }
+
   render() {
-    const { active } = this.state;
+    const { active, search } = this.state;
     const { projects, preferences: { withLatest } } = this.props;
     const dependenciesType = withLatest ? 'latest' : 'stable';
 
@@ -44,7 +48,19 @@ class List extends Component {
 
     return (
       <div className='app--projects'>
+        <header className='app--projects--header'>
+          <input
+            type='text'
+            placeholder='Search...'
+            onChange={ ::this.handleSearch }
+            value={ search } />
+          { search &&
+            <div
+              className='fa fa-times'
+              onClick={ () => this.setState({ search: null }) } /> }
+        </header>
         { projects
+          .filter(({ path }) => search ? path.indexOf(search) > -1 : true)
           .sort((curr, next) =>
             countOutdated(curr.packageManagers, dependenciesType) <
             countOutdated(next.packageManagers, dependenciesType) )
