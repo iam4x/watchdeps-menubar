@@ -5,7 +5,16 @@ import remote from 'remote';
 
 const fs = remote.require('q-io/fs');
 const david = remote.require('david');
+const { exec } = remote.require('child-process-promise');
+const { dirname } = remote.require('path');
+
 const getUpdated = promisify(david.getUpdatedDependencies);
+
+async function fixedSpawn(file, args, { cwd }) {
+  const asString = [ file, ...args ].join(' ');
+  const { SHELL } = window.process.env;
+  return await exec(`${SHELL} -i -c "cd ${cwd} && ${asString}"`);
+}
 
 export async function check({ path }) {
   const packageRAW = await fs.read(path);
@@ -20,9 +29,6 @@ export async function check({ path }) {
     latest: { prod: results[2], dev: results[3] } };
 }
 
-const { dirname } = remote.require('path');
-const { spawn } = remote.require('child-process-promise');
-
 export async function update({ path, outdated }, type) {
   const opts = { cwd: dirname(path) };
 
@@ -34,7 +40,7 @@ export async function update({ path, outdated }, type) {
 
   const dev = [ 'i', '-D', ...asArray(outdated[type].dev) ];
   const prod = [ 'i', '-S', ...asArray(outdated[type].prod) ];
-  await* [ spawn('npm', prod, opts), spawn('npm', dev, opts) ];
+  await* [ fixedSpawn('npm', prod, opts), fixedSpawn('npm', dev, opts) ];
 
   return;
 }
@@ -43,6 +49,6 @@ export async function updateOne({ path, dependency, version, dev }) {
   const opts = { cwd: path };
   const args = [ 'i', dev ? '-D' : '-S', dependency + '@' + version ];
 
-  await spawn('npm', args, opts);
+  await fixedSpawn('npm', args, opts);
   return;
 }
